@@ -6,15 +6,19 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { environment } from '../environments/environment.prod';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 //PrimeNG Modules
 import {PanelModule} from 'primeng/panel';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
+import {ToolbarModule} from 'primeng/toolbar';
+import {TableModule} from 'primeng/table';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { DashboardComponent } from '../app/components/dashboard/dashboard.component';
+import { FitnessComponent } from './components/fitness/fitness.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginFormComponent },
@@ -25,18 +29,22 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginFormComponent,
-    DashboardComponent
+    DashboardComponent,
+    FitnessComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot(appRoutes),
     AngularFirestoreModule,
     FormsModule,
     PanelModule,
-    BrowserAnimationsModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    ToolbarModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,12 @@
-<p>
-  dashboard works!
-</p>
+<p-card>
+  <p-header>
+    <p-toolbar>
+      <p-button label="Fitness" [disabled]="showFitness" (onClick)="toggleView('fitness')"></p-button>
+      <p-button label="Other" [disabled]="showOther" (onClick)="toggleView('other')"></p-button>
+    </p-toolbar>
+  </p-header>
+  <app-fitness *ngIf="showFitness"></app-fitness>
+  <p-footer>
+    Footer content here
+  </p-footer>
+</p-card>

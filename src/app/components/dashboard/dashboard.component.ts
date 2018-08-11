@@ -12,4 +12,17 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
   }
 
+  showFitness:boolean = true;
+  showOther:boolean = false;
+
+  toggleView(selecteTab){
+    if(selecteTab === 'other'){
+      this.showFitness = false;
+      this.showOther = true;
+    }else if(selecteTab === 'fitness'){
+      this.showFitness = true;
+      this.showOther = false;
+    }
+  }
+
 }
