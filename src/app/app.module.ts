@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { DashboardComponent } from '../app/components/dashboard/dashboard.component';
 import { FitnessComponent } from './components/fitness/fitness.component';
+import { FitnessHistoryComponent } from './components/fitness/fitness-history/fitness-history.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginFormComponent },
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginFormComponent,
     DashboardComponent,
-    FitnessComponent
+    FitnessComponent,
+    FitnessHistoryComponent
   ],
   imports: [
     BrowserModule,
