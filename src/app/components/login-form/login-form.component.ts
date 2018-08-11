@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
+import { Router } from '@angular/router';
 
 export interface UserCreds {
   email:string;
@@ -14,7 +15,7 @@ export interface UserCreds {
 })
 export class LoginFormComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore, private router: Router) { }
 
   ngOnInit() {  }
 
@@ -31,7 +32,7 @@ export class LoginFormComponent implements OnInit {
       var resPassword = res[0].userPassword;
       if(resPassword == this.password){
         console.log('this point was reached');
-        //this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']);
       }else{
         alert("Incorrect credentials supplied");
         this.password = "";
