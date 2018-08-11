@@ -14,6 +14,11 @@ export class DashboardComponent implements OnInit {
 
   showFitness:boolean = true;
   showOther:boolean = false;
+  display:boolean = false;
+
+  toggleSidebar(){
+    this.display = !this.display;
+  }
 
   toggleView(selecteTab){
     if(selecteTab === 'other'){

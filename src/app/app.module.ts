@@ -14,6 +14,7 @@ import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {ToolbarModule} from 'primeng/toolbar';
 import {TableModule} from 'primeng/table';
+import {SidebarModule} from 'primeng/sidebar';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
     ButtonModule,
     CardModule,
     ToolbarModule,
-    TableModule
+    TableModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
