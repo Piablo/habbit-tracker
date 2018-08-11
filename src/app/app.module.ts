@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.prod';
 
 //PrimeNG Modules
 import {PanelModule} from 'primeng/panel';
@@ -13,6 +13,8 @@ import {CardModule} from 'primeng/card';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+
+
 
 @NgModule({
   declarations: [
