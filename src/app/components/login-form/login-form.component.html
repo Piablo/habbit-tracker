@@ -1,0 +1,16 @@
+<p-panel >
+  <p-header>
+    Enter login details
+  </p-header>
+  <div >
+    <div class="login-styles">
+        <input type="text" pInputText [(ngModel)]="email" placeholder="Email address"/>
+    </div>
+    <div class="login-styles">
+        <input type="password" pInputText [(ngModel)]="password" placeholder="Password"/>
+    </div>
+  </div>
+  <p-footer>
+      <p-button label="Submit" (onClick)="login()"></p-button>
+  </p-footer>
+</p-panel>
