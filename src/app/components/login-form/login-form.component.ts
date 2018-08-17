@@ -22,8 +22,8 @@ export class LoginFormComponent implements OnInit {
   userCollection: AngularFirestoreCollection<UserCreds>;
   users: Observable<UserCreds[]>;
 
-  password:string;
-  email:string;
+  password:string = 'password';
+  email:string = 'paul.buys1@gmail.com';
 
   login(){
     this.userCollection = this.afs.collection('users', ref => ref.where('userEmail', '==', this.email));
@@ -32,7 +32,7 @@ export class LoginFormComponent implements OnInit {
       var resPassword = res[0].userPassword;
       if(resPassword == this.password){
         console.log('this point was reached');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['dashboard']);
       }else{
         alert("Incorrect credentials supplied");
         this.password = "";

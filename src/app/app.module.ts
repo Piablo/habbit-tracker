@@ -19,12 +19,23 @@ import {SidebarModule} from 'primeng/sidebar';
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { DashboardComponent } from '../app/components/dashboard/dashboard.component';
-import { FitnessComponent } from './components/fitness/fitness.component';
-import { FitnessHistoryComponent } from './components/fitness/fitness-history/fitness-history.component';
+
+//Prime Components
+import {TabViewModule} from 'primeng/tabview';
+import { SleepComponent } from './components/sleep/sleep.component';
 
 const appRoutes: Routes = [
-  { path: '', component: LoginFormComponent },
-  { path: 'dashboard', component: DashboardComponent }
+  { path: 'login', component: LoginFormComponent },
+  { 
+    path: 'dashboard', 
+    component: DashboardComponent,
+    children: [
+      {
+        path: 'sleep',
+        component: SleepComponent
+      }
+    ]
+  }
 ]
 
 @NgModule({
@@ -32,8 +43,7 @@ const appRoutes: Routes = [
     AppComponent,
     LoginFormComponent,
     DashboardComponent,
-    FitnessComponent,
-    FitnessHistoryComponent
+    SleepComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +58,8 @@ const appRoutes: Routes = [
     CardModule,
     ToolbarModule,
     TableModule,
-    SidebarModule
+    SidebarModule,
+    TabViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]
