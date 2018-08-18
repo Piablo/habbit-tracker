@@ -27,7 +27,7 @@ export class SleepComponent implements OnInit {
 
   userCollection:AngularFirestoreCollection;
   currentDayNumber:number = 1;
-  disableInBedButton:boolean = false;
+  disableInBedButton:boolean;
   sleepCollection: AngularFirestoreCollection<SleepData>;
   sleepData: Observable<SleepData[]>;
   sleepTimes:SleepTime[] = [];
@@ -39,6 +39,15 @@ export class SleepComponent implements OnInit {
       this.currentDayNumber = res.length + 1;
       this.initilizeData(res);
     })
+    this.setComponentState();
+  }
+
+  setComponentState(){
+    var value: boolean;
+    var localStorageString = localStorage.getItem('state');
+    if(localStorageString === 'true'){
+      this.disableInBedButton = true;
+    }
   }
   initilizeData(data){
     this.sleepTimes = [];
@@ -66,6 +75,7 @@ export class SleepComponent implements OnInit {
       'inBed': currentTimeStamp
     })
     this.disableInBedButton = true;
+    localStorage.setItem('state','true');
   }
   stillAwake(){
     var currentTimeStamp = this.getCurrentDateTime();
@@ -92,5 +102,6 @@ export class SleepComponent implements OnInit {
 
     this.currentDayNumber ++;
     this.disableInBedButton = false;
+    localStorage.setItem('state', null);
   }
 }
