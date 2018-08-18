@@ -1,5 +1,39 @@
 <p-card>
-    <p-button label="In Bed" (onClick)="inBedTime()"></p-button>
-    <p-button label="Still Awake" (onClick)="stillAwake()"></p-button>
-    <p-button label="Out of Bed" (onClick)="outOfBed()"></p-button>
+    <div class='ui-g'>
+        <span class="ui-g-3">
+            <p-card class="ui-fluid">
+                <div class="btn-styles">
+                    <p-button label="In Bed" (onClick)="inBedTime()" style="width: 100%;" [disabled]="disableInBedButton"></p-button>
+                </div>
+                <div class="btn-styles">
+                    <p-button label="Still Awake" (onClick)="stillAwake()" style="width: 100%;" [disabled]="!disableInBedButton"></p-button>
+                </div>
+                <div class="btn-styles">
+                    <p-button label="Out of Bed" (onClick)="outOfBed()" style="width: 100%;" [disabled]="!disableInBedButton"></p-button>
+                </div>
+            </p-card>
+        </span>
+        <span class="ui-g-9">
+            <p-card>
+                <p-table [value]="sleepTimes">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Day</th>
+                            <th>In Bed</th>
+                            <th>Still Awake</th>
+                            <th>Out Bed</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-sleepTime>
+                        <tr>
+                            <td>{{sleepTime.dayNumber}}</td>
+                            <td>{{sleepTime.inBed}}</td>
+                            <td>{{sleepTime.stillAwake}}</td>
+                            <td>{{sleepTime.outOfBed}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-card>
+        </span>
+    </div>
 </p-card>

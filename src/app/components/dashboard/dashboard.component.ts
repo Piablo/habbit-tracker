@@ -7,31 +7,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
-
-  showFitness:boolean = true;
-  showOther:boolean = false;
-  display:boolean = false;
-
-  toggleSidebar(){
-    this.display = !this.display;
-  }
-
-  toggleView(selecteTab){
-    if(selecteTab === 'other'){
-      this.showFitness = false;
-      this.showOther = true;
-    }else if(selecteTab === 'fitness'){
-      this.showFitness = true;
-      this.showOther = false;
+  
+  constructor(
+    private router: Router) { }
+    
+    ngOnInit() {
+    }
+    
+    showFitness:boolean = true;
+    showOther:boolean = false;
+    display:boolean = false;
+    
+    toggleSidebar(){
+      this.display = !this.display;
+    }
+    
+    toggleView(selecteTab){
+      if(selecteTab === 'other'){
+        this.showFitness = false;
+        this.showOther = true;
+      }else if(selecteTab === 'fitness'){
+        this.showFitness = true;
+        this.showOther = false;
+      }
+    }
+    openSleep(){
+      this.router.navigate(['dashboard/sleep']);
     }
   }
-  openSleep(){
-    this.router.navigate(['dashboard/sleep']);
-  }
-
-}
+  
