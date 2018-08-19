@@ -1,6 +1,6 @@
 <p-card>
     <div class='ui-g'>
-        <span class="ui-g-3">
+        <span class="ui-g-2">
             <p-card class="ui-fluid">
                 <div class="btn-styles">
                     <p-button label="In Bed" (onClick)="inBedTime()" style="width: 100%;" [disabled]="disableInBedButton"></p-button>
@@ -13,7 +13,7 @@
                 </div>
             </p-card>
         </span>
-        <span class="ui-g-9">
+        <span class="ui-g-10">
             <p-card>
                 <p-table [value]="sleepTimes">
                     <ng-template pTemplate="header">
@@ -22,6 +22,7 @@
                             <th>In Bed</th>
                             <th>Still Awake</th>
                             <th>Out Bed</th>
+                            <th>Hours</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-sleepTime>
@@ -30,6 +31,7 @@
                             <td>{{sleepTime.inBed}}</td>
                             <td>{{sleepTime.stillAwake}}</td>
                             <td>{{sleepTime.outOfBed}}</td>
+                            <td>{{sleepTime.sleepHours}}</td>
                         </tr>
                     </ng-template>
                 </p-table>

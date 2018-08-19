@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
+import { SleepService } from '../../services/sleep.service';
 
 export interface SleepTime {
   dayNumber:number;
@@ -18,7 +19,7 @@ export interface SleepTime {
 })
 export class SleepComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore, private sleepService: SleepService) { }
 
   ngOnInit() {
     this.userCollection = this.afs.collection('habbits').doc('sleep').collection('dayNumber');
@@ -28,6 +29,8 @@ export class SleepComponent implements OnInit {
       this.initilizeData(res);
     })
     this.setComponentState();
+
+    
   }
 
   userCollection:AngularFirestoreCollection;
@@ -87,31 +90,32 @@ export class SleepComponent implements OnInit {
   }
   outOfBed(){
     var currentTimeStamp = this.getCurrentDateTime();
+    localStorage.setItem('awakeTime', currentTimeStamp);
+
+    var sleepData = {
+      stillAwake: localStorage.getItem('lastAwakeTime'),
+      outOfBed: localStorage.getItem('awakeTime')
+    }
+    var hoursOfSleep = this.sleepService.calculateSleepHours(sleepData);
+
     var docName = (this.currentDayNumber - 1).toString();
     this.afs
     .collection('habbits')
     .doc('sleep')
     .collection('dayNumber')
     .doc(docName).update({
-      'outOfBed': currentTimeStamp
+      'outOfBed': currentTimeStamp,
+      'sleepHours': hoursOfSleep
     })
 
     this.currentDayNumber ++;
     this.disableInBedButton = false;
     localStorage.setItem('state', null);
-    localStorage.setItem('awakeTime', currentTimeStamp);
+    
   }
   handleClick(){
-    var lastAwakeTime = this.sleepTimes[0].stillAwake;
-    var awakeTime = this.sleepTimes[0].outOfBed; 
-
-    console.log(lastAwakeTime);
-    console.log(awakeTime);
-
-    //localStorage.setItem('lastAwakeTime', currentTimeStamp);
-  }
-  calculateHours(){
-
+    debugger;
+    
   }
 
 }
