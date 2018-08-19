@@ -23,6 +23,8 @@ import { DashboardComponent } from '../app/components/dashboard/dashboard.compon
 //Prime Components
 import {TabViewModule} from 'primeng/tabview';
 import { SleepComponent } from './components/sleep/sleep.component';
+import { CodeSnippitsComponent } from './components/code-snippits/code-snippits.component';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginFormComponent },
@@ -33,6 +35,10 @@ const appRoutes: Routes = [
       {
         path: 'sleep',
         component: SleepComponent
+      },
+      {
+        path: 'code-snippits',
+        component: CodeSnippitsComponent
       }
     ]
   }
@@ -43,7 +49,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginFormComponent,
     DashboardComponent,
-    SleepComponent
+    SleepComponent,
+    CodeSnippitsComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +66,8 @@ const appRoutes: Routes = [
     ToolbarModule,
     TableModule,
     SidebarModule,
-    TabViewModule
+    TabViewModule,
+    AutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,17 +3,12 @@ import { DatePipe } from '@angular/common';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
 
-interface SleepData{
+export interface SleepTime {
   dayNumber:number;
   inBed:String;
   outOfBed:String;
   stillAwake:String;
-}
-export interface SleepTime {
-  dayNumber: number;
-  inBed;
-  outOfBed;
-  stillAwake;
+  sleepHours:String;
 }
 
 @Component({
@@ -25,13 +20,6 @@ export class SleepComponent implements OnInit {
 
   constructor(private afs: AngularFirestore) { }
 
-  userCollection:AngularFirestoreCollection;
-  currentDayNumber:number = 1;
-  disableInBedButton:boolean;
-  sleepCollection: AngularFirestoreCollection<SleepData>;
-  sleepData: Observable<SleepData[]>;
-  sleepTimes:SleepTime[] = [];
-
   ngOnInit() {
     this.userCollection = this.afs.collection('habbits').doc('sleep').collection('dayNumber');
     var users = this.userCollection.valueChanges();
@@ -41,6 +29,13 @@ export class SleepComponent implements OnInit {
     })
     this.setComponentState();
   }
+
+  userCollection:AngularFirestoreCollection;
+  currentDayNumber:number = 1;
+  disableInBedButton:boolean;
+  sleepCollection: AngularFirestoreCollection<SleepTime>;
+  sleepData: Observable<SleepTime[]>;
+  sleepTimes:SleepTime[] = [];
 
   setComponentState(){
     var value: boolean;
@@ -76,6 +71,7 @@ export class SleepComponent implements OnInit {
     })
     this.disableInBedButton = true;
     localStorage.setItem('state','true');
+    localStorage.setItem('lastAwakeTime', currentTimeStamp);
   }
   stillAwake(){
     var currentTimeStamp = this.getCurrentDateTime();
@@ -87,7 +83,7 @@ export class SleepComponent implements OnInit {
     .doc(docName).update({
       'stillAwake': currentTimeStamp
     })
-
+    localStorage.setItem('lastAwakeTime', currentTimeStamp);
   }
   outOfBed(){
     var currentTimeStamp = this.getCurrentDateTime();
@@ -103,5 +99,19 @@ export class SleepComponent implements OnInit {
     this.currentDayNumber ++;
     this.disableInBedButton = false;
     localStorage.setItem('state', null);
+    localStorage.setItem('awakeTime', currentTimeStamp);
   }
+  handleClick(){
+    var lastAwakeTime = this.sleepTimes[0].stillAwake;
+    var awakeTime = this.sleepTimes[0].outOfBed; 
+
+    console.log(lastAwakeTime);
+    console.log(awakeTime);
+
+    //localStorage.setItem('lastAwakeTime', currentTimeStamp);
+  }
+  calculateHours(){
+
+  }
+
 }

@@ -1,0 +1,29 @@
+<div class="ui-g">
+  <div class="ui-g-4">
+    <p-card>
+      stuff
+    </p-card>
+  </div>
+  <div class="ui-g-8">
+    <p-card class="ui-g">
+      <div class="ui-g-12">
+        <label>Add code snippit</label>
+      </div>
+      <div class="ui-g-12">
+        <textarea rows="5" cols="30" pInputTextarea></textarea>
+      </div>
+      <div class="ui-g-12">
+        <!--<p-button label="Click" (onClick)="handleClick()"></p-button>-->
+      </div>
+      
+      <p-autoComplete 
+      [(ngModel)]="tagList" 
+      [suggestions]="filteredTags" 
+      (completeMethod)="filterTagSingle($event)" 
+      field="name" 
+      [size]="30"
+      placeholder="Tags" 
+      [minLength]="1"></p-autoComplete>
+    </p-card>
+  </div>
+</div>
