@@ -8,11 +8,10 @@ export class SleepService {
   constructor() { }
   
   calculateSleepHours(sleepTimes){
-    
     var value;
     
-    var lastAwakeTime = sleepTimes[0].stillAwake;
-    var awakeTime = sleepTimes[0].outOfBed; 
+    var lastAwakeTime = sleepTimes.stillAwake;
+    var awakeTime = sleepTimes.outOfBed; 
     
     var sleepDateTime = lastAwakeTime.split(" ");
     var sleepDateStrings = sleepDateTime[0].split("-");
@@ -46,8 +45,32 @@ export class SleepService {
       value = this.hoursOfSleep(timeTill12, wakeHour, wakeMin, wakeSecond);
     }else{
       console.log('went to bed on the same day');
+      value = this.hoursOfSameDaySleep(wakeSecond, sleepSecond, wakeMin, sleepMin, wakeHour, sleepHour);
     }
     return value;
+  }
+
+  hoursOfSameDaySleep(wakeSecond, sleepSecond, wakeMin, sleepMin, wakeHour, sleepHour){
+ 
+    console.log('wake')
+    console.log(wakeSecond);
+
+    console.log('sleep')
+    console.log(sleepSecond);
+
+    var seconds = wakeSecond + sleepSecond;
+    var minutes = wakeMin + sleepMin;
+    var hours = wakeHour + sleepHour;
+
+    if(seconds > 60){
+      seconds = seconds - 60;
+      minutes = minutes + 1;
+    }
+    if(minutes > 60){
+      minutes = minutes - 60;
+      hours = hours + 1;
+    }
+    console.log(hours + ":" + minutes + ":" + seconds)
   }
   
   hoursOfSleep(timeTill12, wakeHour, wakeMin, wakeSecond){

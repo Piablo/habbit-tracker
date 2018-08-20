@@ -12,6 +12,10 @@ export interface SleepTime {
   sleepHours:String;
 }
 
+export interface AppState {
+  timerEnabled:boolean;
+}
+
 @Component({
   selector: 'app-sleep',
   templateUrl: './sleep.component.html',
@@ -19,7 +23,9 @@ export interface SleepTime {
 })
 export class SleepComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore, private sleepService: SleepService) { }
+  constructor(
+    private afs: AngularFirestore,
+    private sleepService: SleepService) { }
 
   ngOnInit() {
     this.userCollection = this.afs.collection('habbits').doc('sleep').collection('dayNumber');
@@ -27,26 +33,37 @@ export class SleepComponent implements OnInit {
     users.subscribe(res =>{
       this.currentDayNumber = res.length + 1;
       this.initilizeData(res);
+      
     })
-    this.setComponentState();
-
-    
+    this.updateComponentState();
   }
 
   userCollection:AngularFirestoreCollection;
   currentDayNumber:number = 1;
-  disableInBedButton:boolean;
   sleepCollection: AngularFirestoreCollection<SleepTime>;
   sleepData: Observable<SleepTime[]>;
   sleepTimes:SleepTime[] = [];
+  disableInBedButton:boolean;
+  appState;
 
-  setComponentState(){
-    var value: boolean;
-    var localStorageString = localStorage.getItem('state');
-    if(localStorageString === 'true'){
-      this.disableInBedButton = true;
-    }
+  updateComponentState(){
+    var collection = this.afs.collection('app-state').doc('sleep');
+    var state = collection.valueChanges();
+    state.subscribe(res => {
+      this.appState = res;
+      this.disableInBedButton = this.appState.timerEnabled;
+    })
   }
+
+  setButtonState(state){
+    this.afs
+    .collection('app-state')
+    .doc('sleep').update({
+      'timerEnabled': state
+    })
+  }
+
+
   initilizeData(data){
     this.sleepTimes = [];
     var listLength = data.length;
@@ -72,7 +89,7 @@ export class SleepComponent implements OnInit {
       'dayNumber': this.currentDayNumber,
       'inBed': currentTimeStamp
     })
-    this.disableInBedButton = true;
+    this.setButtonState(true);
     localStorage.setItem('state','true');
     localStorage.setItem('lastAwakeTime', currentTimeStamp);
   }
@@ -96,6 +113,7 @@ export class SleepComponent implements OnInit {
       stillAwake: localStorage.getItem('lastAwakeTime'),
       outOfBed: localStorage.getItem('awakeTime')
     }
+    debugger;
     var hoursOfSleep = this.sleepService.calculateSleepHours(sleepData);
 
     var docName = (this.currentDayNumber - 1).toString();
@@ -104,17 +122,29 @@ export class SleepComponent implements OnInit {
     .doc('sleep')
     .collection('dayNumber')
     .doc(docName).update({
-      'outOfBed': currentTimeStamp,
-      'sleepHours': hoursOfSleep
+      'outOfBed': currentTimeStamp
+    })
+
+    this.afs
+    .collection('habbits')
+    .doc('sleep')
+    .collection('dayNumber')
+    .doc(docName).set({
+      'sleepHours': hoursOfSleep.toString()
     })
 
     this.currentDayNumber ++;
-    this.disableInBedButton = false;
+    this.setButtonState(false);
     localStorage.setItem('state', null);
     
   }
+
+  tempVar = true;
   handleClick(){
-    debugger;
+    //this.updateComponentState();
+
+    this.setButtonState(this.tempVar);
+    this.tempVar = !this.tempVar;
     
   }
 
