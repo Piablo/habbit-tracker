@@ -39,60 +39,60 @@ export class SleepService {
     var wakeSecond:number = parseInt(wakeTimeStrings[2]);
     
     if(sleepDay !== wakeDay){
-      console.log('went to bed ' + (wakeDay - sleepDay).toString() + ' day(s) before..');
-      
       var timeTill12 = this.timeTill12(wakeDay - sleepDay, sleepHour, sleepMin, sleepSecond);
       value = this.hoursOfSleep(timeTill12, wakeHour, wakeMin, wakeSecond);
     }else{
-      console.log('went to bed on the same day');
       value = this.hoursOfSameDaySleep(wakeSecond, sleepSecond, wakeMin, sleepMin, wakeHour, sleepHour);
     }
     return value;
   }
 
   hoursOfSameDaySleep(wakeSecond, sleepSecond, wakeMin, sleepMin, wakeHour, sleepHour){
- 
-    console.log('wake')
-    console.log(wakeSecond);
+    var seconds = wakeSecond - sleepSecond;
+    var minutes = wakeMin - sleepMin;
+    var hours = wakeHour - sleepHour;
 
-    console.log('sleep')
-    console.log(sleepSecond);
-
-    var seconds = wakeSecond + sleepSecond;
-    var minutes = wakeMin + sleepMin;
-    var hours = wakeHour + sleepHour;
-
-    if(seconds > 60){
-      seconds = seconds - 60;
-      minutes = minutes + 1;
+    if(seconds < 0){
+      seconds = 60 + seconds;
+      minutes = minutes - 1;
     }
-    if(minutes > 60){
-      minutes = minutes - 60;
-      hours = hours + 1;
+    if(minutes < 0){
+      minutes = 60 + minutes;
+      hours = hours - 1;
     }
-    console.log(hours + ":" + minutes + ":" + seconds)
+    var value = this.sanitizeString(hours, minutes, seconds);
+    return value;
   }
   
   hoursOfSleep(timeTill12, wakeHour, wakeMin, wakeSecond){
-    
     var hours = timeTill12.hours + wakeHour;
     var mins = timeTill12.mins + wakeMin;
     var seconds = timeTill12.seconds + wakeSecond;
-    
     if(seconds > 60){
-      mins + 1;
+      mins = mins + 1;
       seconds = seconds - 60;
     }
     if(mins > 60){
-      hours + 1;
+      hours = hours + 1;
       mins = mins - 60;
     }
-    var value = {
-      hours: hours,
-      mins: mins,
-      seconds: seconds
-    }
+    
+    var value = this.sanitizeString(hours, mins, seconds);
     return value;
+  }
+
+  sanitizeString(hours, mins, seconds){
+    var value:string;
+    var singleDigit = mins.toString().length;
+    if(singleDigit === 1){
+      mins = "0" + mins.toString();
+    }
+    singleDigit = seconds.toString().length;
+    if(singleDigit === 1){
+      seconds = "0" + seconds.toString();
+    }
+    return value = hours + ":" + mins + ":" + seconds;
+
   }
   
   timeTill12(differenceInDays, sleepHour, sleepMin, sleepSecond){

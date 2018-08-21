@@ -113,7 +113,11 @@ export class SleepComponent implements OnInit {
       stillAwake: localStorage.getItem('lastAwakeTime'),
       outOfBed: localStorage.getItem('awakeTime')
     }
-    debugger;
+
+    console.log('over here');
+    console.log(sleepData.stillAwake);
+    console.log(sleepData.outOfBed);
+
     var hoursOfSleep = this.sleepService.calculateSleepHours(sleepData);
 
     var docName = (this.currentDayNumber - 1).toString();
@@ -129,8 +133,8 @@ export class SleepComponent implements OnInit {
     .collection('habbits')
     .doc('sleep')
     .collection('dayNumber')
-    .doc(docName).set({
-      'sleepHours': hoursOfSleep.toString()
+    .doc(docName).update({
+      'sleepHours': hoursOfSleep
     })
 
     this.currentDayNumber ++;

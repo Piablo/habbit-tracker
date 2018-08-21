@@ -31,7 +31,6 @@ export class LoginFormComponent implements OnInit {
     this.users.subscribe(res => {
       var resPassword = res[0].userPassword;
       if(resPassword == this.password){
-        console.log('this point was reached');
         this.router.navigate(['dashboard']);
       }else{
         alert("Incorrect credentials supplied");
