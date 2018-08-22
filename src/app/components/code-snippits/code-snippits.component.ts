@@ -21,6 +21,7 @@ export class CodeSnippitsComponent implements OnInit {
     this.tagString.subscribe(res =>{
       this.tags = res.fullList.split(" ");
       this.tags = this.convertToTagModel(this.tags);
+      console.log(this.tags)
     })
   }
   
@@ -29,6 +30,66 @@ export class CodeSnippitsComponent implements OnInit {
   tagString: Observable<Tag>;
   tagList: any;
   filteredTags: any[];
+  userInput:string;
+  
+  selectedTags:string[] = [];
+  
+  onSelect(){
+    console.log('onSelect')
+    //Add the selected tag to an array.
+    var selectedTag = this.tagList.name
+    this.selectedTags.push(selectedTag);
+    //Remove the selected tag from the existing arrray.
+    
+    this.removeSelectedTag(selectedTag);
+    this.tagList = null;
+    console.log(this.selectedTags);
+    
+    
+  }
+  
+  saveTags(){
+    var value ="";
+    var listLength = this.selectedTags.length;
+    for(var i = 0; i < listLength; i++){
+      if(value !== ""){
+        value = value + " " + this.selectedTags[i];
+      }else{
+        value = this.selectedTags[i]
+      }
+    }
+    listLength = this.tags.length;
+    for(var i = 0; i < listLength; i++){
+      if(value !== ""){
+        value = value + " " + this.tags[i].name;
+      }else{
+        value = this.tags[i].name;
+      }
+      
+    }
+    
+    this.afs
+    .collection('code-snippits')
+    .doc('tags').set({
+      'fullList': value
+    })
+    console.log(value);
+  }
+  
+  addNewTag(){
+    this.selectedTags.push(this.userInput);
+    this.userInput = null;
+    this.tagList = null;
+    console.log(this.selectedTags)
+  }
+  
+  removeSelectedTag(selectedTag){
+    for(var i = 0; i < this.tags.length; i++){
+      if(selectedTag === this.tags[i].name){
+        this.tags.splice(i,1);
+      }
+    }
+  }
   
   convertToTagModel(arrayOfTags){
     var value:any[] = [];
