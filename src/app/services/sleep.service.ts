@@ -68,11 +68,11 @@ export class SleepService {
     var hours = timeTill12.hours + wakeHour;
     var mins = timeTill12.mins + wakeMin;
     var seconds = timeTill12.seconds + wakeSecond;
-    if(seconds > 60){
+    if(seconds >= 60){
       mins = mins + 1;
       seconds = seconds - 60;
     }
-    if(mins > 60){
+    if(mins >= 60){
       hours = hours + 1;
       mins = mins - 60;
     }
