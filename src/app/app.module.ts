@@ -15,6 +15,7 @@ import {CardModule} from 'primeng/card';
 import {ToolbarModule} from 'primeng/toolbar';
 import {TableModule} from 'primeng/table';
 import {SidebarModule} from 'primeng/sidebar';
+import {DialogModule} from 'primeng/dialog';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -67,7 +68,8 @@ const appRoutes: Routes = [
     TableModule,
     SidebarModule,
     TabViewModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    DialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

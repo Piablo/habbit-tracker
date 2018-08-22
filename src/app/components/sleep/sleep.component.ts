@@ -45,6 +45,7 @@ export class SleepComponent implements OnInit {
   sleepTimes:SleepTime[] = [];
   disableInBedButton:boolean;
   appState;
+  display:boolean = false;
 
   updateComponentState(){
     var collection = this.afs.collection('app-state').doc('sleep');
@@ -105,18 +106,32 @@ export class SleepComponent implements OnInit {
     })
     localStorage.setItem('lastAwakeTime', currentTimeStamp);
   }
+
+  setQualityOfSleep(userSelection){
+    var docName = (this.currentDayNumber - 1).toString();
+    this.afs
+    .collection('habbits')
+    .doc('sleep')
+    .collection('dayNumber')
+    .doc(docName).update({
+      'sleepQuality': userSelection
+    })
+    this.display = false;
+  }
   outOfBed(){
     var currentTimeStamp = this.getCurrentDateTime();
     localStorage.setItem('awakeTime', currentTimeStamp);
 
     var sleepData = {
-      //stillAwake: localStorage.getItem('lastAwakeTime'),
-      //outOfBed: localStorage.getItem('awakeTime')
+      stillAwake: localStorage.getItem('lastAwakeTime'),
+      outOfBed: localStorage.getItem('awakeTime')
 
-      stillAwake: "2018-8-21 23:39:53",
-      outOfBed: "2018-8-22 6:40:27"
+      //stillAwake: "2018-8-21 23:39:53",
+      //outOfBed: "2018-8-22 6:40:27"
     }
 
+    
+    
     
     
     console.log('over here');
@@ -145,6 +160,8 @@ export class SleepComponent implements OnInit {
     this.currentDayNumber ++;
     this.setButtonState(false);
     localStorage.setItem('state', null);
+
+    this.display = true;
     
   }
 

@@ -1,42 +1,59 @@
 <p-card>
     <div class='ui-g'>
-        <span class="ui-g-2">
-            <p-card class="ui-fluid">
-                <div class="btn-styles">
-                    <p-button label="In Bed" (onClick)="inBedTime()" style="width: 100%;" [disabled]="disableInBedButton"></p-button>
-                </div>
-                <div class="btn-styles">
-                    <p-button label="Still Awake" (onClick)="stillAwake()" style="width: 100%;" [disabled]="!disableInBedButton"></p-button>
-                </div>
-                <div class="btn-styles">
-                    <p-button label="Out of Bed" (onClick)="outOfBed()" style="width: 100%;" [disabled]="!disableInBedButton"></p-button>
-                </div>
-            </p-card>
-        </span>
-        <span class="ui-g-10">
-            <p-card>
-                <p-table [value]="sleepTimes">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Day</th>
-                            <th>In Bed</th>
-                            <th>Still Awake</th>
-                            <th>Out Bed</th>
-                            <th>Hours</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-sleepTime>
-                        <tr>
-                            <td>{{sleepTime.dayNumber}}</td>
-                            <td>{{sleepTime.inBed}}</td>
-                            <td>{{sleepTime.stillAwake}}</td>
-                            <td>{{sleepTime.outOfBed}}</td>
-                            <td>{{sleepTime.sleepHours}}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </p-card>
-        </span>
-    </div>
-    <p-button label="Click" (onClick)="handleClick()"></p-button>
+        <p-toolbar class="ui-g-12">
+            <div class="ui-toolbar-group-left">
+                <p-button label="In Bed" 
+                style="padding-right: 2px;"
+                (onClick)="inBedTime()" 
+                [disabled]="disableInBedButton">
+            </p-button>
+            
+            <p-button label="Still Awake" 
+            style="padding-right: 2px;"
+            (onClick)="stillAwake()" 
+            [disabled]="!disableInBedButton">
+        </p-button>
+        
+        <p-button label="Out of Bed" 
+        style="padding-right: 2px;"
+        (onClick)="outOfBed()" 
+        [disabled]="!disableInBedButton">
+    </p-button>
+    
+</div>
+</p-toolbar>
+<span class="ui-g-12">
+    <p-card>
+        <p-table [value]="sleepTimes">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Day</th>
+                    <th>In Bed</th>
+                    <th>Still Awake</th>
+                    <th>Out Bed</th>
+                    <th>Hours</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-sleepTime>
+                <tr>
+                    <td>{{sleepTime.dayNumber}}</td>
+                    <td>{{sleepTime.inBed}}</td>
+                    <td>{{sleepTime.stillAwake}}</td>
+                    <td>{{sleepTime.outOfBed}}</td>
+                    <td>{{sleepTime.sleepHours}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</span>
+</div>
+<p-button label="Click" (onClick)="handleClick()"></p-button>
 </p-card>
+<p-dialog header="Sleep Quality" [(visible)]="display" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70" 
+[closable]="false" [baseZIndex]="10000">
+<span>Rate the quality of your nights sleep</span>
+<p-footer>
+    <button type="button" pButton (click)="setQualityOfSleep('good')" label="Good"></button>
+    <button type="button" pButton (click)="setQualityOfSleep('bad')" label="Bad"></button>
+</p-footer>
+</p-dialog>
