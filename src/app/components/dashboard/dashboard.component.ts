@@ -31,9 +31,7 @@ export class DashboardComponent implements OnInit {
         this.showOther = false;
       }
     }
-    openSleep(){
-      this.router.navigate(['dashboard/sleep']);
-    }
+    
 
     openCodeSnippits(){
       this.router.navigate(['dashboard/code-snippits']);

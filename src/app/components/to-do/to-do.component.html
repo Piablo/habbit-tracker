@@ -1,0 +1,14 @@
+<p-table [value]="tasks">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Tasks</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-task>
+        <tr>
+            <td>{{task.vin}}</td>
+            <td><p-button label="Open sleep recorder" (onClick)="openSleep()" style="padding-right:2px"></p-button></td>
+        </tr>
+    </ng-template>
+</p-table>

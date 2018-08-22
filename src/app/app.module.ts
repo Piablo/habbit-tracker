@@ -26,6 +26,7 @@ import {TabViewModule} from 'primeng/tabview';
 import { SleepComponent } from './components/sleep/sleep.component';
 import { CodeSnippitsComponent } from './components/code-snippits/code-snippits.component';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import { ToDoComponent } from './components/to-do/to-do.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginFormComponent },
@@ -40,6 +41,10 @@ const appRoutes: Routes = [
       {
         path: 'code-snippits',
         component: CodeSnippitsComponent
+      },
+      {
+        path: 'to-do',
+        component: ToDoComponent
       }
     ]
   }
@@ -51,7 +56,8 @@ const appRoutes: Routes = [
     LoginFormComponent,
     DashboardComponent,
     SleepComponent,
-    CodeSnippitsComponent
+    CodeSnippitsComponent,
+    ToDoComponent
   ],
   imports: [
     BrowserModule,

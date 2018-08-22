@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
 import { SleepService } from '../../services/sleep.service';
+import { Router } from '@angular/router';
 
 export interface SleepTime {
   dayNumber:number;
@@ -25,7 +26,8 @@ export class SleepComponent implements OnInit {
 
   constructor(
     private afs: AngularFirestore,
-    private sleepService: SleepService) { }
+    private sleepService: SleepService,
+    private router: Router) { }
 
   ngOnInit() {
     this.userCollection = this.afs.collection('habbits').doc('sleep').collection('dayNumber');
@@ -117,6 +119,7 @@ export class SleepComponent implements OnInit {
       'sleepQuality': userSelection
     })
     this.display = false;
+    this.router.navigate(['dashboard/to-do']);
   }
   outOfBed(){
     var currentTimeStamp = this.getCurrentDateTime();
@@ -166,11 +169,8 @@ export class SleepComponent implements OnInit {
   }
 
   tempVar = true;
-  handleClick(){
-    //this.updateComponentState();
-
-    this.setButtonState(this.tempVar);
-    this.tempVar = !this.tempVar;
+  cancel(){
+   this.router.navigate(['dashboard/to-do']);
     
   }
 

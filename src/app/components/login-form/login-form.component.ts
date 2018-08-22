@@ -25,13 +25,15 @@ export class LoginFormComponent implements OnInit {
   password:string = 'password';
   email:string = 'paul.buys1@gmail.com';
 
+ 
+
   login(){
     this.userCollection = this.afs.collection('users', ref => ref.where('userEmail', '==', this.email));
     this.users = this.userCollection.valueChanges();
     this.users.subscribe(res => {
       var resPassword = res[0].userPassword;
       if(resPassword == this.password){
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['dashboard/to-do']);
       }else{
         alert("Incorrect credentials supplied");
         this.password = "";
