@@ -128,18 +128,7 @@ export class SleepComponent implements OnInit {
     var sleepData = {
       stillAwake: localStorage.getItem('lastAwakeTime'),
       outOfBed: localStorage.getItem('awakeTime')
-
-      //stillAwake: "2018-8-21 23:39:53",
-      //outOfBed: "2018-8-22 6:40:27"
     }
-
-    
-    
-    
-    
-    console.log('over here');
-    console.log(sleepData.stillAwake);
-    console.log(sleepData.outOfBed);
 
     var hoursOfSleep = this.sleepService.calculateSleepHours(sleepData);
 

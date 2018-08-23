@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
+import { Router } from '@angular/router';
 
 interface Tag{
   fullList:string;
@@ -13,7 +14,7 @@ interface Tag{
 })
 export class CodeSnippitsComponent implements OnInit {
   
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore, private router: Router) { }
   ngOnInit() {
     this.tagCollection = this.afs.collection('code-snippits').doc('tags');
     this.tagString = this.tagCollection.valueChanges();
@@ -21,7 +22,6 @@ export class CodeSnippitsComponent implements OnInit {
     this.tagString.subscribe(res =>{
       this.tags = res.fullList.split(" ");
       this.tags = this.convertToTagModel(this.tags);
-      console.log(this.tags)
     })
   }
   
@@ -31,11 +31,9 @@ export class CodeSnippitsComponent implements OnInit {
   tagList: any;
   filteredTags: any[];
   userInput:string;
-  
   selectedTags:string[] = [];
   
   onSelect(){
-    console.log('onSelect')
     //Add the selected tag to an array.
     var selectedTag = this.tagList.name
     this.selectedTags.push(selectedTag);
@@ -43,46 +41,27 @@ export class CodeSnippitsComponent implements OnInit {
     
     this.removeSelectedTag(selectedTag);
     this.tagList = null;
-    console.log(this.selectedTags);
-    
-    
   }
-  
   saveTags(){
-    var value ="";
-    var listLength = this.selectedTags.length;
-    for(var i = 0; i < listLength; i++){
-      if(value !== ""){
-        value = value + " " + this.selectedTags[i];
-      }else{
-        value = this.selectedTags[i]
-      }
-    }
-    listLength = this.tags.length;
-    for(var i = 0; i < listLength; i++){
-      if(value !== ""){
-        value = value + " " + this.tags[i].name;
-      }else{
-        value = this.tags[i].name;
-      }
-      
-    }
     
+    var addAllTags = true
+    var value = this.convertArrayToString(this.selectedTags, addAllTags);
     this.afs
     .collection('code-snippits')
     .doc('tags').set({
       'fullList': value
     })
-    console.log(value);
+    
+    this.saveSnippit(this.selectedTags, 'this is the snippit');
+    this.selectedTags = [];
+    this.router.navigate(['dashboard/to-do']);
+    
   }
-  
   addNewTag(){
     this.selectedTags.push(this.userInput);
     this.userInput = null;
     this.tagList = null;
-    console.log(this.selectedTags)
   }
-  
   removeSelectedTag(selectedTag){
     for(var i = 0; i < this.tags.length; i++){
       if(selectedTag === this.tags[i].name){
@@ -90,7 +69,6 @@ export class CodeSnippitsComponent implements OnInit {
       }
     }
   }
-  
   convertToTagModel(arrayOfTags){
     var value:any[] = [];
     var listLength = arrayOfTags.length;
@@ -102,12 +80,10 @@ export class CodeSnippitsComponent implements OnInit {
     }
     return value;
   }
-  
   filterTagSingle(event) {
     let query = event.query;
     this.filteredTags = this.filterTag(query, this.tags);
   }
-  
   filterTag(query, tags: any[]):any[] {
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered : any[] = [];
@@ -118,5 +94,41 @@ export class CodeSnippitsComponent implements OnInit {
       }
     }
     return filtered;
+  }
+  saveSnippit(tagArray, snippit){
+    var addAllTags = false;
+    var tagString = this.convertArrayToString(tagArray, addAllTags);
+    console.log(tagString);
+
+    this.afs
+    .collection('code-snippits')
+    .doc('snippits')
+    .collection('list')
+    .doc('1')
+    .set({
+      'tags': tagString
+    })
+  }
+  convertArrayToString(tagArray, addAllTags){
+    var value ="";
+    var listLength = tagArray.length;
+    for(var i = 0; i < listLength; i++){
+      if(value !== ""){
+        value = value + " " + tagArray[i];
+      }else{
+        value = tagArray[i]
+      }
+    }
+    if(addAllTags){
+      listLength = this.tags.length;
+      for(var i = 0; i < listLength; i++){
+        if(value !== ""){
+          value = value + " " + this.tags[i].name;
+        }else{
+          value = this.tags[i].name;
+        }
+      }
+    }
+    return value;
   }
 }
