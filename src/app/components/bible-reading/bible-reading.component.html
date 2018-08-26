@@ -1,1 +1,12 @@
-<p>{{lastScripture}}</p>
+<p>Last read: {{lastScripture}}</p>
+
+<p-autoComplete 
+[(ngModel)]="country" 
+[(ngModel)]="book" 
+[suggestions]="filteredCountriesSingle" 
+(completeMethod)="filterCountrySingle($event)" [size]="30"
+placeholder="Select book" [minLength]="1"></p-autoComplete>
+
+<input type="number" pInputText [(ngModel)]="chapter"/>
+
+<p-button label="Click" (onClick)="saveScripture()"></p-button>
