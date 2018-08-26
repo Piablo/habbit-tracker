@@ -52,7 +52,11 @@
         </div>
       </div>
     </p-card>
-    <p-button type="button" (onClick)="saveTags()" icon="pi pi-check" class="ui-button-success"></p-button> 
+    <p-button type="button" 
+    [disabled]="hideSaveSnippitButton" 
+    (onClick)="saveTags()" 
+    icon="pi pi-check" 
+    class="ui-button-success"></p-button> 
   </div>
 </div>
 

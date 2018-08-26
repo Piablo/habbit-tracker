@@ -7,6 +7,11 @@ interface Tag{
   fullList:string;
 }
 
+interface CodeSnippits {
+  snippitId: number;
+  tags: string;
+}
+
 @Component({
   selector: 'app-code-snippits',
   templateUrl: './code-snippits.component.html',
@@ -23,7 +28,27 @@ export class CodeSnippitsComponent implements OnInit {
       this.tags = res.fullList.split(" ");
       this.tags = this.convertToTagModel(this.tags);
     })
+
+    this.codeSnippitCollection = this.afs.collection('code-snippits').doc('snippits').collection('list');
+    this.codeSnippits = this.codeSnippitCollection.valueChanges();
+
+    this.codeSnippits.subscribe(res =>{
+      this.arrayOfAllTags = this.splitStringByArrary(res);
+      console.log('over here 2');
+      console.log(this.arrayOfAllTags);
+    })
+
+    
+
   }
+
+  codeSnippitCollection:AngularFirestoreCollection;
+  codeSnippits: Observable<any>;
+  codeSnippitModel: CodeSnippits[];
+
+  hideSaveSnippitButton:boolean = true;
+
+  arrayOfAllTags:any[];
   
   tags:any[] = [];
   tagCollection: AngularFirestoreDocument<Tag>;
@@ -32,15 +57,59 @@ export class CodeSnippitsComponent implements OnInit {
   filteredTags: any[];
   userInput:string;
   selectedTags:string[] = [];
+
+  
   
   onSelect(){
     //Add the selected tag to an array.
     var selectedTag = this.tagList.name
     this.selectedTags.push(selectedTag);
     //Remove the selected tag from the existing arrray.
+
+    this.searchForTagMatch(selectedTag, this.arrayOfAllTags);
+
+    console.log('over here');
+      console.log(this.arrayOfAllTags);
     
     this.removeSelectedTag(selectedTag);
     this.tagList = null;
+  }
+
+  searchForTagMatch(tag, tagArray){
+    var listLength = tagArray.length;
+    var matchFound = false;
+    var tempArrayHolder:any[] = [];
+
+    for(var i = 0; i < listLength; i++){
+      var innerlistLength = tagArray[i].length;
+      for(var i1 = 0; i1 < innerlistLength; i1++){
+        var temp = tagArray[i];
+        if(tag === temp[i1]){
+          tempArrayHolder.push(tagArray[i]);
+          matchFound = true;
+        }
+      }
+    }
+    this.arrayOfAllTags = tempArrayHolder;
+    console.log("here dude");
+    if(tempArrayHolder.length === 0){
+      this.hideSaveSnippitButton = false;
+    }
+  }
+
+  snippitIndexs:any[] = [];
+
+  splitStringByArrary(stringByArray){
+    var listLength = stringByArray.length;
+    var tempValue;
+    var returnValue:any[] = [];
+    //var 
+    for(var i = 0; i < listLength; i++){
+      tempValue = (stringByArray[i].tags).split(' ');
+      this.snippitIndexs.push(stringByArray[i].snippitId)
+      returnValue.push(tempValue);
+    }
+    return returnValue;
   }
   saveTags(){
     
@@ -59,6 +128,7 @@ export class CodeSnippitsComponent implements OnInit {
   }
   addNewTag(){
     this.selectedTags.push(this.userInput);
+    this.searchForTagMatch(this.userInput, this.arrayOfAllTags);
     this.userInput = null;
     this.tagList = null;
   }
@@ -98,16 +168,16 @@ export class CodeSnippitsComponent implements OnInit {
   saveSnippit(tagArray, snippit){
     var addAllTags = false;
     var tagString = this.convertArrayToString(tagArray, addAllTags);
-    console.log(tagString);
+    // console.log(tagString);
 
-    this.afs
-    .collection('code-snippits')
-    .doc('snippits')
-    .collection('list')
-    .doc('1')
-    .set({
-      'tags': tagString
-    })
+    // this.afs
+    // .collection('code-snippits')
+    // .doc('snippits')
+    // .collection('list')
+    // .doc('1')
+    // .set({
+    //   'tags': tagString
+    // })
   }
   convertArrayToString(tagArray, addAllTags){
     var value ="";

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from '../../../../node_modules/rxjs';
 import { SleepService } from '../../services/sleep.service';
 import { Router } from '@angular/router';
+import { TimeStampService } from '../../services/time-stamp.service';
 
 export interface SleepTime {
   dayNumber:number;
@@ -27,7 +27,8 @@ export class SleepComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private sleepService: SleepService,
-    private router: Router) { }
+    private router: Router,
+    private timeStamp: TimeStampService) { }
 
   ngOnInit() {
     this.userCollection = this.afs.collection('habbits').doc('sleep').collection('dayNumber');
@@ -74,15 +75,9 @@ export class SleepComponent implements OnInit {
       this.sleepTimes.push(data[i]);
     }
   }
-  getCurrentDateTime(){
-    var today: number = Date.now();
-    var datePipe = new DatePipe('en-US');
-    var myFormattedDate = datePipe.transform(today, 'y-M-d H:mm:ss');
-
-    return myFormattedDate;
-  }
+  
   inBedTime(){
-    var currentTimeStamp = this.getCurrentDateTime();
+    var currentTimeStamp = this.timeStamp.getCurrentDateTime();
     var docName = this.currentDayNumber.toString();
     this.afs
     .collection('habbits')
@@ -97,7 +92,7 @@ export class SleepComponent implements OnInit {
     localStorage.setItem('lastAwakeTime', currentTimeStamp);
   }
   stillAwake(){
-    var currentTimeStamp = this.getCurrentDateTime();
+    var currentTimeStamp = this.timeStamp.getCurrentDateTime();
     var docName = (this.currentDayNumber - 1).toString();
     this.afs
     .collection('habbits')
@@ -122,7 +117,7 @@ export class SleepComponent implements OnInit {
     this.router.navigate(['dashboard/to-do']);
   }
   outOfBed(){
-    var currentTimeStamp = this.getCurrentDateTime();
+    var currentTimeStamp = this.timeStamp.getCurrentDateTime();
     localStorage.setItem('awakeTime', currentTimeStamp);
 
     var sleepData = {

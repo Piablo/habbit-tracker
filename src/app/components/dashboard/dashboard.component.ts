@@ -31,6 +31,9 @@ export class DashboardComponent implements OnInit {
         this.showOther = false;
       }
     }
+    openDailyTasks(){
+      this.router.navigate(['dashboard/to-do']);
+    }
     
 
     openCodeSnippits(){

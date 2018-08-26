@@ -27,6 +27,7 @@ import { SleepComponent } from './components/sleep/sleep.component';
 import { CodeSnippitsComponent } from './components/code-snippits/code-snippits.component';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { ToDoComponent } from './components/to-do/to-do.component';
+import { BibleReadingComponent } from './components/bible-reading/bible-reading.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginFormComponent },
@@ -45,6 +46,10 @@ const appRoutes: Routes = [
       {
         path: 'to-do',
         component: ToDoComponent
+      },
+      {
+        path: 'bible-reading',
+        component: BibleReadingComponent
       }
     ]
   }
@@ -57,7 +62,8 @@ const appRoutes: Routes = [
     DashboardComponent,
     SleepComponent,
     CodeSnippitsComponent,
-    ToDoComponent
+    ToDoComponent,
+    BibleReadingComponent
   ],
   imports: [
     BrowserModule,
