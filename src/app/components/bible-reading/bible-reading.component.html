@@ -1,4 +1,22 @@
+<p-table [value]="scriptureData">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Start Time</th>
+            <th>Finish Time</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-scripture>
+        <tr>
+            <td>{{scripture.finishTime}}</td>
+            <td>{{scripture.startTime}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+
 <p>Last read: {{lastScripture}}</p>
+
 
 <p-autoComplete 
 [(ngModel)]="country" 
@@ -9,4 +27,7 @@ placeholder="Select book" [minLength]="1"></p-autoComplete>
 
 <input type="number" pInputText [(ngModel)]="chapter"/>
 
-<p-button label="Click" (onClick)="saveScripture()"></p-button>
+<p-button label="Submit scripture" (onClick)="saveScripture()"[disabled]="!showAddScripture"></p-button>
+
+<p-button label="Start time" (onClick)="saveStartTime()" [disabled]="!showSaveStartTime"></p-button>
+<p-button label="Finish time" (onClick)="saveFinishTime()" [disabled]="!showSaveFinishTime"></p-button>

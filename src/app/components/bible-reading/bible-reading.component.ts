@@ -54,8 +54,22 @@ export class BibleReadingComponent implements OnInit {
       this.listOfBooks = stringToSplit.split('-');
       console.log(this.listOfBooks);
     })
+
+    this.readingCollection = this.afs.collection('habbits').doc('bibleReading').collection('dayNumber');
+    this.readings = this.readingCollection.valueChanges();
     
+    this.readings.subscribe(res =>{
+      this.arrayOfScriptures = res;
+      console.log('this guy');
+      console.log(res);
+      this.scriptureData = res;
+    })
   }
+
+  scriptureData:any[] = [];
+
+  readingCollection:AngularFirestoreCollection;
+  readings: Observable<any>;
 
   saveScripture(){
     console.log(this.book);
@@ -71,9 +85,50 @@ export class BibleReadingComponent implements OnInit {
     .set({
       'scripture': stringToSave
     })
+    this.showAddScripture = false;
+    this.showSaveStartTime = true;
 
+    //this.router.navigate(['dashboard/to-do']);
+  }
+
+  currentTimeStamp:string;
+
+  saveStartTime(){
+    this.currentTimeStamp = this.timeStamp.getCurrentDateTime();
+    var documentName = parseInt(this.docName);
+    documentName = documentName - 1;
+
+    this.afs
+    .collection('habbits')
+    .doc('bibleReading')
+    .collection('dayNumber')
+    .doc(documentName.toString())
+    .update({
+      'startTime': this.currentTimeStamp
+    })
+    this.showSaveStartTime = false;
+    this.showSaveFinishTime = true;
+  }
+
+  saveFinishTime(){
+    this.currentTimeStamp = this.timeStamp.getCurrentDateTime();
+    var documentName = parseInt(this.docName);
+    documentName = documentName - 1;
+
+    this.afs
+    .collection('habbits')
+    .doc('bibleReading')
+    .collection('dayNumber')
+    .doc(documentName.toString())
+    .update({
+      'finishTime': this.currentTimeStamp
+    })
     this.router.navigate(['dashboard/to-do']);
   }
+
+  showAddScripture:boolean = true;
+  showSaveStartTime:boolean = false;
+  showSaveFinishTime:boolean = false;
   
   listOfBooks:any[] = [];
   country: any;
