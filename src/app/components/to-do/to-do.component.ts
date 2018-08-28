@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { TimeStampService } from '../../services/time-stamp.service';
 import { Router } from '@angular/router';
-import { debug } from 'util';
 
 interface TimeStamp {
   timeStampString:string;
@@ -27,19 +26,44 @@ export class ToDoComponent implements OnInit {
   timeRecorder: AngularFirestoreDocument;
   timeStamp: any;
   timeModel:TimeModel[] = [];
+  newTaskHolder:string;
+
+  navigationSelector(selectorString){
+    if(selectorString === 'Bible Reading'){
+      this.router.navigate(['dashboard/bible-reading']);
+    }else if(selectorString === 'Sleep Recorder'){
+      this.router.navigate(['dashboard/sleep']);
+    }
+  }
+  currentListOfStrings:string;
+
+  populateListOfTasks(res){
+    var value = {
+      listOfStrings: ""
+    }
+    console.log(res);
+    value = res;
+    this.currentListOfStrings = value.listOfStrings;
+    var listToSplit = value.listOfStrings;
+    this.tasks = listToSplit.split('-');
+  }
   
   ngOnInit() {
-    this.tasks = [
-      { vin: 'Record sleep data:', header: 'Vin' },
-    ];
+
+    var collectionHolder = this.afs.collection('habbits').doc('list');
+    var tasks = collectionHolder.valueChanges();
+    tasks.subscribe(res =>{
+      console.log(res);
+      this.populateListOfTasks(res);
+    })
 
     this.timeRecorder = this.afs.collection('stats').doc('sleepRecorder');
     var sleepRecorder = this.timeRecorder.valueChanges();
     sleepRecorder.subscribe(res =>{
       this.timeStamp = res;
       var temp = this.timeStampService.getCurrentDateTime();
-      //Testing data
 
+      //Testing data
       var value = [];
       value.push("22:50:47");
       value.push("22:45:59");
@@ -48,10 +72,6 @@ export class ToDoComponent implements OnInit {
       value = this.timeStringToNumber(value);
       this.calculateAverage(value);
     })
-  }
-
-  openBibleReading(){
-    this.router.navigate(['dashboard/bible-reading']);
   }
 
   timeStringToNumber(timeStringArray){
@@ -70,6 +90,18 @@ export class ToDoComponent implements OnInit {
     }
     return returnValue;
   }
+  newTask(){
+
+    this.currentListOfStrings = this.newTaskHolder + "-" + this.currentListOfStrings;
+    console.log(this.currentListOfStrings);
+
+    this.afs
+    .collection('habbits')
+    .doc('list').set({
+      'listOfStrings': this.currentListOfStrings
+    })
+    this.newTaskHolder = "";
+  }
 
   calculateAverage(timeStampArray){
     var listLength = timeStampArray.length;
@@ -86,15 +118,5 @@ export class ToDoComponent implements OnInit {
     sumOfMins = sumOfMins / listLength;
     SumOfHours = SumOfHours / listLength;
   }
-
-  openSleep(){
-    this.saveClickTime();
-    this.router.navigate(['dashboard/sleep']);
-  }
-  saveClickTime(){
-
-  }
-  
   tasks: any[];
-  
 }

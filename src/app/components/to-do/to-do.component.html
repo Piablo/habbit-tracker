@@ -1,24 +1,25 @@
-<p-table [value]="tasks">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Tasks</th>
-            <th>Average time</th>
-            <th>Goal time</th>
-            <th></th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-task>
-        <tr>
-            <td>Bible Reading:</td>
-            <td>Time goes here</td>
-            <td>22:00</td>
-            <td><p-button label="Bible reading" (onClick)="openBibleReading()" style="padding-right:2px"></p-button></td>
-        </tr>
-        <tr>
-            <td>{{task.vin}}</td>
-            <td>Time goes here</td>
-            <td>Time goes here</td>
-            <td><p-button label="Open sleep recorder" (onClick)="openSleep()" style="padding-right:2px"></p-button></td>
-        </tr>
-    </ng-template>
-</p-table>
+<p-card>
+    <p-toolbar>
+        <input type="text" pInputText [(ngModel)]="newTaskHolder"/>
+        <p-button label="New Task" (onClick)="newTask()" style="padding-right:2px"></p-button>
+    </p-toolbar>
+    <p-table [value]="tasks">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Tasks</th>
+                <th>Average time</th>
+                <th>Goal time</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-task>
+            <tr>
+                <td>{{task}}</td>
+                <td>Time goes here</td>
+                <td>22:00</td>
+                <td><p-button label={{task}} (onClick)="navigationSelector(task)" style="padding-right:2px"></p-button></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
+
